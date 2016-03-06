@@ -12,3 +12,31 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
 
 ## Step by step
 
+### Prepare reference genome and transcriptome for STAR alignment
+  - Download newest version of STAR from https://github.com/alexdobin/STAR
+  - Download reference genome (.fasta file) and transcriptome (.gtf/.gff file) from one of the following sources:
+   - iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
+   - NCBI Genome: http://www.ncbi.nlm.nih.gov/genome/51 (need to map chromosome names if download directly from NCBI)
+   - ENSEMBL: http://useast.ensembl.org/info/data/ftp/index.html?redirect=no
+  - Generate genome index for STAR without using any annotation ([example])
+
+### Aligne reads to references
+ - Locate the full path of all fastq files
+ - Download the yaml example from https://raw.githubusercontent.com/zhezhangsh/Rnaseq/master/examples/RunStar/RunStar.yml
+ - Edit the yaml file for each data set, especially the following fields:
+   - _output_: location of output files
+   - _junction_: options about novel junction sites
+   - _qsub_: options to **qsub** alignment jobs to a cluster
+   - _genomeDir_: directory of indexed reference genome
+   - _sjdbGTFfile_: full path to gene annotation gtf file
+   - _fastq_: full path of fastq files
+ - Rnaseq::RunStar(fn.yaml) to generate code to perfrom STAR alignment
+   - A _RunStar.sh_ file for each sample
+   - A _qsub.sh_ file for qsub-ing all RunStar.sh files
+   - Extra script that delete temporary SAM files and merge junction sites
+ - qsub the qsub.sh script to a cluster for alignment
+
+### Count reads mapped to annotated genes
+
+
+  
