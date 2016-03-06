@@ -34,7 +34,11 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
    - A _RunStar.sh_ file for each sample
    - A _qsub.sh_ file for qsub-ing all RunStar.sh files
    - Extra script that delete temporary SAM files and merge junction sites
- - qsub the qsub.sh script to a cluster
+ - Run STAR
+   - Submit the _<PATH>/pass_1/qsub.sh_ file to the cluster for the first pass
+   - Run the _<PATH>/pass_1/script/combine_junction.r_ script to combine novel junction sites for the second pass
+   - Submit the _<PATH>/pass_2/qsub.sh_ file to the cluster for the second pass
+   - Run the _<PATH>/pass_1/script/delete_sam.sh_ script to remove temparary sam files
  - The final output is a set of sorted and indexed .bam files
 
 ### Count reads mapped to annotated genes
