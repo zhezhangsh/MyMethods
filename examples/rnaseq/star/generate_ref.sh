@@ -1,5 +1,3 @@
-# Index reference genome for STAR alignment
-# No gene annotation information
 /nas/is1/rnaseq_workspace/tools/STAR-2.5.1b/bin/Linux_x86_64_static/STAR \
 --runThreadN 12 \
 --runMode genomeGenerate \
