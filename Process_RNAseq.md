@@ -18,7 +18,7 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
    - iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
    - NCBI Genome: http://www.ncbi.nlm.nih.gov/genome/51 (need to map chromosome names if download directly from NCBI)
    - ENSEMBL: http://useast.ensembl.org/info/data/ftp/index.html?redirect=no
-  - Generate genome index for STAR without using any annotation ([example])
+  - Generate genome index for STAR without using any annotation ([example code](examples/IndexStarReference.sh))
 
 ### Aligne reads to references
  - Locate the full path of all fastq files
@@ -30,9 +30,9 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
    - _genomeDir_: directory of indexed reference genome
    - _sjdbGTFfile_: full path to gene annotation gtf file
    - _fastq_: full path of fastq files
- - Rnaseq::RunStar(fn.yaml) to generate code to perfrom STAR alignment
-   - A _RunStar.sh_ file for each sample
-   - A _qsub.sh_ file for qsub-ing all RunStar.sh files
+ - Rnaseq::RunStar(fn.yaml) to generate code to perfrom STAR alignment for each pass
+   - A _RunStar.sh_ file for each sample ([example](examples/RunStar_Pass1.sh))
+   - A _qsub.sh_ file for qsub-ing all RunStar.sh files ([example](examples/qsub_STAR.sh))
    - Extra script that delete temporary SAM files and merge junction sites
  - Run STAR
    - Submit the _<PATH>/pass_1/qsub.sh_ file to the cluster for the first pass
