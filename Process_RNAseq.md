@@ -118,4 +118,22 @@ bam:                                                                          # 
   2863C-L1F: /mnt/isilon/cbmi/variome/zhangz/projects/simmons/2016-02_RNAseq/star/pass_2/2863C-L1F_Aligned.sortedByCoord.out.bam
   2863C-L1FL: /mnt/isilon/cbmi/variome/zhangz/projects/simmons/2016-02_RNAseq/star/pass_2/2863C-L1FL_Aligned.sortedByCoord.out.bam
 ```
-  
+
+  - Download the R script to generate qsub code; run the script; and qsub jobs
+```
+# shell code: download R script
+wget https://github.com/zhezhangsh/MyMethods/edit/master/examples/rnaseq/load_bam/LoadBamScript.r LoadBamScript.r 
+
+# shell code: generate qsub commands
+Rscript LoadBamScript.r  # a qsub.sh file will be generated in the current folder
+
+# shell code: qsub jobs to cluster
+sh qsub.sh
+```
+
+
+
+
+
+
+
