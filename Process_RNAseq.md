@@ -12,24 +12,61 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
 
 ## Step by step
 
-### Prepare reference genome and transcriptome for STAR alignment
-  - Download newest version of STAR from https://github.com/alexdobin/STAR
-  - Download reference genome (.fasta file) and transcriptome (.gtf/.gff file) from one of the following sources:
+### Prepare reference genome and transcriptome for STAR alignment: 
+1. Download newest version of STAR from https://github.com/alexdobin/STAR
+2. Download reference genome (.fasta file) and transcriptome (.gtf/.gff file) from one of the following sources:
    - iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
    - NCBI Genome: http://www.ncbi.nlm.nih.gov/genome/51 (need to map chromosome names if download directly from NCBI)
    - ENSEMBL: http://useast.ensembl.org/info/data/ftp/index.html?redirect=no
-  - Generate genome index for STAR without using any annotation ([example code](examples/rnaseq/star/generate_ref.sh))
+3. Generate genome index for STAR without using any annotation (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/generate_ref.sh)
 
-### Aligne reads to references
- - Locate the full path of all fastq files
- - Download the yaml example from https://raw.githubusercontent.com/zhezhangsh/Rnaseq/master/examples/RunStar/RunStar.yml
- - Edit the yaml file for each data set, especially the following fields:
-   - _output_: location of output files
-   - _junction_: options about novel junction sites
-   - _qsub_: options to **qsub** alignment jobs to a cluster
-   - _genomeDir_: directory of indexed reference genome
-   - _sjdbGTFfile_: full path to gene annotation gtf file
-   - _fastq_: full path of fastq files
+```
+# Generate reference genome
+/nas/is1/rnaseq_workspace/tools/STAR-2.5.1b/bin/Linux_x86_64_static/STAR \
+--runThreadN 12 \
+--runMode genomeGenerate \
+--genomeDir /nas/is1/rnaseq_workspace/refs/mm38/star \
+--genomeFastaFiles /nas/is1/rnaseq_workspace/refs/mm38/GCF_000001635.24_GRCm38.p4_genomic.fna
+```
+
+### Align reads to references via STAR
+1. Locate the full path of all fastq files
+2. Download the yaml template to local fold 
+
+```
+# Download yaml template
+wget https://raw.githubusercontent.com/zhezhangsh/Rnaseq/master/examples/RunStar/RunStar.yml RunStar.yml
+```
+
+3. Edit the yaml file for each data set, especially the following fields
+
+# yaml fields
+output: /home/zhangz/R/source/MyMethods/examples/rnaseq/star  # location of output files
+junction:                                                     # options about combining novel junction sites from individual libraries
+  combine: yes                                                  # combine junction sites ?
+  filename: combined_SJ.out.tab                                 # file name of combined junctions
+  canonical: no                                                 # include canonical sites only in the combined file?
+  unannotated: yes                                              # include unannotated sites only in the combined file?
+  minimum:                                                      # filtering strategies
+    read: 3                                                       # the minimal number of reads mapped to the jucntion in each library
+    overhang: 5                                                   # the minimal overhang of the junction in each library
+    sample: 3                                                     # the minimal number of samples meeting the last 2 criteria
+    total: 12                                                     # the total number of reads from all libraries mapped to the junction
+qsub:                                                         # options to qsub alignment jobs to a cluster
+  will: yes                                                     # will qsub jobs?
+  prefix: qsub -cwd -l mem_free=32G -l h_vmem=64G -pe smp 16    # command prefix for qsub each alignment jobs
+  path:                                                         # path change
+    from: /nas/is1                                                # local path to the input files      
+    to: /mnt/isilon/cbmi/variome                                  # cluster path for qsub
+options:                                                      # other options
+   - _genomeDir_:                                               # directory of indexed reference genome
+   - _sjdbGTFfile_:                                             # full path to gene annotation gtf file   
+fastq:                                                        # list of fastq files, name each library
+  C2863:                                                        # name of library
+    fastq1: /nas/is1/zhangz/projects/simmons/fastq/C2863_1.fq.gz
+    fastq2: /nas/is1/zhangz/projects/simmons/fastq/C2863_2.fq.gz
+```
+
  - Rnaseq::RunStar(fn.yaml) to generate code to perfrom STAR alignment for each pass
    - A _RunStar.sh_ file for each sample ([example](examples/rnaseq/star/pass_1/STAR_C2863.sh))
    - A _qsub.sh_ file for qsub-ing all RunStar.sh files ([example](examples/rnaseq/star/pass_1/qsub.sh))
