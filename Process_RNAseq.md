@@ -67,16 +67,24 @@ fastq:                                                        # list of fastq fi
     fastq2: /nas/is1/zhangz/projects/simmons/fastq/C2863_2.fq.gz
 ```
 
- - Rnaseq::RunStar(fn.yaml) to generate code to perfrom STAR alignment for each pass
-   - A _RunStar.sh_ file for each sample ([example](examples/rnaseq/star/pass_1/STAR_C2863.sh))
-   - A _qsub.sh_ file for qsub-ing all RunStar.sh files ([example](examples/rnaseq/star/pass_1/qsub.sh))
-   - Extra script that delete temporary SAM files and merge junction sites ([example](examples/rnaseq/star/pass_1/script))
- - Run STAR
-   - Submit the _<PATH>/pass_1/qsub.sh_ file to the cluster for the first pass
-   - Run the _<PATH>/pass_1/script/combine_junction.r_ script to combine novel junction sites for the second pass
-   - Submit the _<PATH>/pass_2/qsub.sh_ file to the cluster for the second pass
-   - Run the _<PATH>/pass_1/script/delete_sam.sh_ script to remove temparary sam files
- - The final output is a set of sorted and indexed .bam files
+  - Generate code to perfrom STAR alignment and other functions. Code for each pass includes:
+   - A _RunStar.sh_ file for each sample (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/STAR_C2863.sh)
+   - A _qsub.sh_ file for qsub-ing all RunStar.sh files (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/qsub.sh)
+   - Extra script that delete temporary SAM files and merge junction sites (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/script/combined_junction.r and https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/script/delete_sam.sh)
+
+```
+# shell code: qsub the first pass alignment
+sh <PATH>/pass_1/qsub.sh
+
+# shell code: combine novel junction sites of individual libraries for the second pass alignment
+Rscript <PATH>/pass_1/script/combine_junction.r
+
+# shell code: remove temparory sam files from the first pass
+sh delete_sam.sh
+
+# shell code: qsub the second pass alignment
+sh <PATH>/pass_2/qsub.sh
+```
 
 ### Count reads mapped to annotated genes
 
