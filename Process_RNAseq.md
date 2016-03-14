@@ -19,7 +19,7 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
    - iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
    - NCBI Genome: http://www.ncbi.nlm.nih.gov/genome/51 (need to map chromosome names if download directly from NCBI)
    - ENSEMBL: http://useast.ensembl.org/info/data/ftp/index.html?redirect=no
-- Generate genome index for STAR without using any annotation (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/generate_ref.sh)
+- Generate genome index for STAR without using any annotation; example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/generate_ref.sh
 
 ```
 # shell code: generate reference genome
@@ -59,8 +59,8 @@ qsub:                                                         # options to qsub 
     from: /nas/is1                                                # local path to the input files      
     to: /mnt/isilon/cbmi/variome                                  # cluster path for qsub
 options:                                                      # other options
-   - _genomeDir_:                                               # directory of indexed reference genome
-   - _sjdbGTFfile_:                                             # full path to gene annotation gtf file   
+   - genomeDir                                                    # directory of indexed reference genome
+   - sjdbGTFfile                                                  # full path to gene annotation gtf file   
 fastq:                                                        # list of fastq files, name each library
   C2863:                                                        # name of library
     fastq1: /nas/is1/zhangz/projects/simmons/fastq/C2863_1.fq.gz
@@ -68,9 +68,9 @@ fastq:                                                        # list of fastq fi
 ```
 
   - Generate code to perfrom STAR alignment and other functions. Code for each pass includes:
-   - A _RunStar.sh_ file for each sample (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/STAR_C2863.sh)
-   - A _qsub.sh_ file for qsub-ing all RunStar.sh files (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/qsub.sh)
-   - Extra script that delete temporary SAM files and merge junction sites (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/script/combined_junction.r and https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/script/delete_sam.sh)
+   - A _RunStar.sh_ file for each sample; example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/STAR_C2863.sh
+   - A _qsub.sh_ file for qsub-ing all RunStar.sh files; example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/qsub.sh
+   - Extra script that delete temporary SAM files and merge junction sites; example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/script/combined_junction.r and https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/pass_1/script/delete_sam.sh
 
 ```
 # shell code: qsub the first pass alignment
