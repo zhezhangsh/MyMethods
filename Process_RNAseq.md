@@ -33,7 +33,7 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
 ### Align reads to references via STAR
 
   - Locate the full path of all fastq files
-  - Download the yaml template to local fold 
+  - Download the yaml template to local folder 
 ```
 # shell code: download yaml template
 wget https://raw.githubusercontent.com/zhezhangsh/Rnaseq/master/examples/RunStar/RunStar.yml RunStar.yml
@@ -88,7 +88,34 @@ sh <PATH>/pass_2/qsub.sh
 
 ### Load bam files to get gene-level read counts
 
-  - Locate all 
-
-
+  - Locate all indexed bam files
+  - Download the yaml template to local folder 
+```
+# shell code: download yaml template
+wget https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/load_bam/LoadBamScript.yml LoadBamScript.yml
+```
+  - Edit the yaml file for each data set, especially the following fields
+```
+# text editing: yaml fields
+output: /home/zhangz/R/source/MyMethods/examples/rnaseq/load_bam              # Location of output files
+exon: /mnt/isilon/cbmi/variome/rnaseq_workspace/refs/mm38/GRCm38_exon.rds     # Exon annotation. A GRanges object, with the transcript_id and gene_id fields
+paired: yes                                                                   # PE and SE reads
+strand: -1.0                                                                  # 0 if libraries not stranded; -1 if using common protocol
+split:                                                                        # split reads into subgroups by ID
+  split: yes                                                                  
+  separator: ':'                                                                 # separator of read ID syllabus
+  level: 3                                                                       # number of syllabus in read ID to split subgroups
+R: /home/zhangz/miniconda3/envs/zhangz/bin/Rscript                            # the location of R program on the cluster
+qsub: qsub -cwd -l mem_free=64G -l h_vmem=64G -pe smp 16                      # qsub prefix; adjust mem_free corresponding to file size
+region:                                                                       # specify chromosomes and locations
+  NC_000067.6:
+  - 1.0
+  - 1.9547197e+08
+  NC_000068.7:
+  - 1.0
+  - 1.8211322e+08
+bam:                                                                          # sample name and bam file full path
+  2863C-L1F: /mnt/isilon/cbmi/variome/zhangz/projects/simmons/2016-02_RNAseq/star/pass_2/2863C-L1F_Aligned.sortedByCoord.out.bam
+  2863C-L1FL: /mnt/isilon/cbmi/variome/zhangz/projects/simmons/2016-02_RNAseq/star/pass_2/2863C-L1FL_Aligned.sortedByCoord.out.bam
+```
   
