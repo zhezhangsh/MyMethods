@@ -86,7 +86,9 @@ sh delete_sam.sh
 sh <PATH>/pass_2/qsub.sh
 ```
 
-### Count reads mapped to annotated genes
+### Load bam files to get gene-level read counts
+
+  - Locate all 
 
 
   
