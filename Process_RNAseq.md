@@ -119,7 +119,7 @@ bam:                                                                          # 
   2863C-L1FL: /mnt/isilon/cbmi/variome/zhangz/projects/simmons/2016-02_RNAseq/star/pass_2/2863C-L1FL_Aligned.sortedByCoord.out.bam
 ```
 
-  - Download the R script to generate qsub code; run the script; and qsub jobs
+  - Download the R script to generate qsub code, run the script, and qsub jobs; example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/load_bam/LoadBamScript.r and https://github.com/zhezhangsh/MyMethods/edit/master/examples/rnaseq/load_bam/qsub.sh
 ```
 # shell code: download R script
 wget https://github.com/zhezhangsh/MyMethods/edit/master/examples/rnaseq/load_bam/LoadBamScript.r LoadBamScript.r 
