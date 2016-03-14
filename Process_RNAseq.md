@@ -13,15 +13,16 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
 ## Step by step
 
 ### Prepare reference genome and transcriptome for STAR alignment: 
-1. Download newest version of STAR from https://github.com/alexdobin/STAR
-2. Download reference genome (.fasta file) and transcriptome (.gtf/.gff file) from one of the following sources:
+
+- Download newest version of STAR from https://github.com/alexdobin/STAR
+- Download reference genome (.fasta file) and transcriptome (.gtf/.gff file) from one of the following sources:
    - iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
    - NCBI Genome: http://www.ncbi.nlm.nih.gov/genome/51 (need to map chromosome names if download directly from NCBI)
    - ENSEMBL: http://useast.ensembl.org/info/data/ftp/index.html?redirect=no
-3. Generate genome index for STAR without using any annotation (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/generate_ref.sh)
+- Generate genome index for STAR without using any annotation (example: https://raw.githubusercontent.com/zhezhangsh/MyMethods/master/examples/rnaseq/star/generate_ref.sh)
 
 ```
-# Generate reference genome
+# shell code: generate reference genome
 /nas/is1/rnaseq_workspace/tools/STAR-2.5.1b/bin/Linux_x86_64_static/STAR \
 --runThreadN 12 \
 --runMode genomeGenerate \
@@ -30,17 +31,16 @@ Aligned reads in .bam files were loaded into R using two custom functions.The fi
 ```
 
 ### Align reads to references via STAR
-1. Locate the full path of all fastq files
-2. Download the yaml template to local fold 
 
+  - Locate the full path of all fastq files
+  - Download the yaml template to local fold 
 ```
-# Download yaml template
+# shell code: download yaml template
 wget https://raw.githubusercontent.com/zhezhangsh/Rnaseq/master/examples/RunStar/RunStar.yml RunStar.yml
 ```
-
-3. Edit the yaml file for each data set, especially the following fields
-
-# yaml fields
+  - Edit the yaml file for each data set, especially the following fields
+```
+# text editing: yaml fields
 output: /home/zhangz/R/source/MyMethods/examples/rnaseq/star  # location of output files
 junction:                                                     # options about combining novel junction sites from individual libraries
   combine: yes                                                  # combine junction sites ?
