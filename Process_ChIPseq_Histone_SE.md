@@ -10,4 +10,4 @@ Aligned reads are loaded into R using the [***readGAlignments {GenomicAlignments
 
 ## Calculate base-level sequencing depth
 
-All loaded and filtered reads are extended to 200bp long from their end, and converted to sequencing depth at each base, using the ***coverage {GenomicRanges}*** function. The base-level sequencing depth is saved as both R object and ***.bedGraph*** file, which can be visualized with UCSC Genome Browser.
+All loaded and filtered reads are extended to 200bp long from their end, and converted to sequencing depth at each base, using the [***coverage {GenomicRanges}***](http://web.mit.edu/~r/current/arch/i386_linux26/lib/R/library/GenomicRanges/html/coverage-methods.html) function. The base-level sequencing depth is saved as both R object and ***.bedGraph*** file, which can be visualized with ***UCSC Genome Browser***.
