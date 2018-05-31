@@ -12,6 +12,8 @@ Quality of aligned reads will be evaluated by one or multiple tools listed below
   - Our **[bamchop](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S3)** tool that summarizes both of the sequencing reads themselves and the alignment, such as regional enrichment of sequencing depth along chromosomes (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_histone.pdf)_), as well as the comparison of multiple ChIP-Qualityseq libraries (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_multi.pdf)_). 
   - An Rmarkdown template based on our ***[RoCA](https://github.com/zhezhangsh/RoCA)*** framework that will generate a formatted report (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/filter_read.pdf)_) for each ChIP-seq libraries. It simutaneously summarizes read/alignment quality and filter reads by quality, length, location, etc.
 
-## Calculate base-level sequencing depth
+## Visualization
 
-All loaded and filtered reads are extended to 200bp long from their end, and converted to sequencing depth at each base, using the ***[coverage {GenomicRanges}](http://web.mit.edu/~r/current/arch/i386_linux26/lib/R/library/GenomicRanges/html/coverage-methods.html)*** function. The base-level sequencing depth is saved as both R object and ***.bedGraph*** file, which can be visualized with ***UCSC Genome Browser***.
+Aligned reads are converted to ***.bedGraph*** format to be visualized via **UCSC Genome Browser**. Single-end reads are extended at the 3' end to the estimated average length of DNA fragments in the ChIP-seq library to cover regions occupied by the target proteins. By default, the reads will be extended to 200bp long when the ChIP-seq targets are histone modifications.
+
+
