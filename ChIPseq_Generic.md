@@ -9,7 +9,7 @@ Reference genome is indexed by the ***novoindex*** function of the [***NovoAlign
 Quality of aligned reads will be evaluated by one or multiple tools listed below and filtered by ***SAM*** fields, such as _mapq_, _cigar_, and _flag_. Reads with low sequencing or alignment quality will be removed, and libraries with overall low quality will be individually reviewed to decide an action.
 
   - The publicly available tool **[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)** to summarize quality score, read length, GC content, duplication level, etc.
-  - Our **[bamchop](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S3)** tool that summarizes both of the sequencing reads themselves and the alignment, such as regional enrichment of sequencing depth along chromosomes (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_histone.pdf_), as well as the comparison of multiple ChIP-seq libraries (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_multi.pdf)_). 
+  - Our **[bamchop](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S3)** tool that summarizes both of the sequencing reads themselves and the alignment, such as regional enrichment of sequencing depth along chromosomes (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_histone.pdf)_), as well as the comparison of multiple ChIP-seq libraries (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_multi.pdf)_). 
 
 ## Calculate base-level sequencing depth
 
