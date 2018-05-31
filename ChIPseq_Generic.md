@@ -6,10 +6,11 @@ Reference genome is indexed by the ***novoindex*** function of the [***NovoAlign
 
 ## Quality control
 
-Quality of aligned reads will be evaluated by one or multiple tools listed below and filtered by ***SAM*** fields, such as _mapq_, _cigar_, and _flag_. Reads with low sequencing or alignment quality will be removed, and libraries with overall low quality will be individually reviewed to decide an action.
+Quality of aligned reads will be evaluated by one or multiple tools listed below. Read filtering will be applied based on ***SAM*** fields, such as _mapq_, _cigar_, and _flag_, alignment location, and level of duplication due to PCR bias. Reads with poor sequencing or alignment quality will be removed, and libraries with overall low quality will be individually reviewed to decide an action.  
 
   - The publicly available tool **[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)** to summarize quality score, read length, GC content, duplication level, etc.
   - Our **[bamchop](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S3)** tool that summarizes both of the sequencing reads themselves and the alignment, such as regional enrichment of sequencing depth along chromosomes (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_histone.pdf)_), as well as the comparison of multiple ChIP-Qualityseq libraries (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/bamchop_multi.pdf)_). 
+  - An Rmarkdown template based on our ***[RoCA](https://github.com/zhezhangsh/RoCA)*** framework that will generate a formatted report (_[example](https://github.com/zhezhangsh/MyMethods/blob/master/examples/chipseq/filter_read.pdf)_) for each ChIP-seq libraries. It simutaneously summarizes read/alignment quality and filter reads by quality, length, location, etc.
 
 ## Calculate base-level sequencing depth
 
