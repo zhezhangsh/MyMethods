@@ -14,6 +14,6 @@ Quality of aligned reads will be evaluated by one or multiple tools listed below
 
 ## Visualization
 
-Aligned reads are converted to ***.bedGraph*** format to be visualized via **UCSC Genome Browser**. Single-end reads are extended at the 3' end to the estimated average length of DNA fragments in the ChIP-seq library to cover regions occupied by the target proteins. By default, the reads will be extended to 200bp long when the ChIP-seq targets are histone modifications.
+Aligned reads are converted to sequencing depth along chromosomes and saved in ***.bedGraph*** format to be visualized via **UCSC Genome Browser**. Single-end reads are extended at the 3' end to the estimated average length of DNA fragments in the ChIP-seq library to cover regions occupied by the target proteins. By default, the reads will be extended to 200bp long when the ChIP-seq targets are histone modifications.
 
 
