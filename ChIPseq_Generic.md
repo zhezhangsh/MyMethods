@@ -16,4 +16,16 @@ Quality of aligned reads will be evaluated by one or multiple tools listed below
 
 Aligned reads are converted to sequencing depth along chromosomes and saved in ***.bedGraph*** format to be visualized via **UCSC Genome Browser**. Single-end reads are extended at the 3' end to the estimated average length of DNA fragments in the ChIP-seq library to cover regions occupied by the target proteins. By default, the reads will be extended to 200bp long when the ChIP-seq targets are histone modifications.
 
+## Analysis
 
+### Histone modification
+
+When the IP targets are histone modifications, such as H3K4me3 and H3K27ac, the default analysis method is to summarize the ChIP-seq measurements at functionally annotated genomic regions, such as gene promoters and mutation hotspots. The measurements could be number of sequencing reads mapped to the regions or the average sequencing depth of the regions. When there are biological replicates and two or more biological conditions, the measurements can be presented as a data matrix that can be subjected to quantatative statistical analysis, such as DESeq2 for read count matrix and Student's t test for sequencing depth. Regions having significant difference between biological condictions will be used for further analysis, such as:
+
+  - Map the regions to nearby genes for functional intepretation or cross-validation with gene expression data
+  - Compare regions of multiple histone modifications
+  - Sequence analysis within the regions, such as GC content and enrichment of sequence motifs. 
+  
+### Transcription fact
+
+When the IP targets are transcription factors, the default analysis method is to call TF binding peaks using the **[MACS](http://liulab.dfci.harvard.edu/MACS/)** software. Peaks identified by **MACS** will be visually inspected on **USCS Genome Browser**. Peaks will mapped to nearby genes or functionally annotated regions for intepretation and further analysis. Enrichment of known protein binding motifs provided by ENCODE and other databases will be tested within the DNA sequences around peaks, and the **[rGADEM](https://bioconductor.org/packages/release/bioc/html/rGADEM.html)** tool will be used for de novo discovery of motifs at the peaks. Further follow-up analysis, such as cross-validation with gene expression data, will be performed based on specific project and data availability. 
