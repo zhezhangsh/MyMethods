@@ -1,4 +1,4 @@
-# Alignment and mapping of palindormic PacBio reads
+# Alignment and mapping of palindromic PacBio reads
 
 The goal of this procedure is to deal with often palindromic and chimeric PacBio reads by first doing subtraction and then addition:
 
