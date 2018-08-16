@@ -15,8 +15,21 @@ This is a subtraction step that splits long reads into smaller subreads with fix
 
 In the example below, 
 
+  - Prepare 3 character vectors of original read IDs, read sequences, and quality scores, all with the same length and matching each other
+  - Obtain the 1st subread from 1-400 from the original read, then the 2nd from 101-500 (100bp step size), until the end of the original read
+  - Remove subreads shorter than 200bp
+  - Name each subreads following the [QNAME convention](https://pacbiofileformats.readthedocs.io/en/3.0/BAM.html#qname-convention) of unrolled PacBio read
+  - Write all subreads to a .fastq file
 
 ```r
-ls()
+## Example R code
+
+# devtools::install_github('zhezhangsh/RH');
+require(RH);
+
+# id, seq and qual are character vectors of the same length with read IDs, sequences, quality scores
+TrimLongRead(id=id, seq=seq, qual=qual, length=400, step=100, min.length=200,
+            output='fastq', filename='trimmed.fastq');
+
 ```
 
