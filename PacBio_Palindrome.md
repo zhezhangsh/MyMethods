@@ -43,5 +43,5 @@ In the example below:
   
 ```sh
 blasr trimmed400.fastq target12.fasta --sam --placeGapConsistently \
- --out trimmed400.sam --nproc 32 --hitPolicy all --minAlnLength 200
+ --out trimmed400.sam --nproc 32 --hitPolicy all --minAlnLength 200 &
 ```
