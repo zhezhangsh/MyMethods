@@ -39,11 +39,18 @@ The subreads are aligned to reference genome, or targeted regions like RH genes,
 In the example below: 
 
   - Use the output file from the last step <trimmed.fastq>
-  
+  - Prepare the reference genome, sequences of 12 targeted genes in this case
+  - Run blasr with 32 processors and write output to a .sam file
+  - Report all hits with at least 200bp alignment
+  - Optionally, use the _--maxScore_ flag to set an alignment score cutoff of a hit to be reported
   
 ```sh
-## Example: run _blasr_ under Unix
+## Example: run blasr under Unix
 
 blasr trimmed400.fastq target12.fasta --sam --placeGapConsistently \
  --out trimmed400.sam --nproc 32 --hitPolicy all --minAlnLength 200 &
 ```
+
+## Load SAM file
+
+
