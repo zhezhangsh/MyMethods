@@ -29,7 +29,7 @@ require(RH);
 
 # id, seq and qual are character vectors of the same length with read IDs, sequences, quality scores
 TrimLongRead(id=id, seq=seq, qual=qual, length=400, step=100, min.length=200,
-            output='fastq', filename='trimmed.fastq');
+            output='fastq', filename='trimmed400.fastq');
 ```
 
 ## Align reads
@@ -38,7 +38,10 @@ The subreads are aligned to reference genome, or targeted regions like RH genes,
 
 In the example below: 
 
+  - Use the output file from the last step <trimmed.fastq>
+  
+  
 ```sh
-
+blasr trimmed400.fastq target12.fasta --sam --placeGapConsistently --out trimmed400.sam --nproc 32 --hitPolicy all --minAlnLength 200
 
 ```
