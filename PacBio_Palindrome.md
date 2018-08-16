@@ -22,7 +22,7 @@ In the example below,
   - Write all subreads to a .fastq file
 
 ```r
-## Example R code
+## Example: R code
 
 # devtools::install_github('zhezhangsh/RH');
 require(RH);
@@ -42,6 +42,8 @@ In the example below:
   
   
 ```sh
+## Example: run _blasr_ under Unix
+
 blasr trimmed400.fastq target12.fasta --sam --placeGapConsistently \
  --out trimmed400.sam --nproc 32 --hitPolicy all --minAlnLength 200 &
 ```
