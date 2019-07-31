@@ -10,4 +10,5 @@
 5. [Compare clustering tools](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6124389.2)
 6. [Workflow via Wei Sun](http://research.fhcrc.org/content/dam/stripe/sun/software/scRNAseq/scRNAseq.html)
 7. [Analyze with DESeq2](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
+8. [Monocle 3](https://cole-trapnell-lab.github.io/monocle3/)
 
