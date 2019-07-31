@@ -1,9 +1,9 @@
 
-# 
 
 
 
-# References
+
+**References**
 
 1. [Current best practices](https://www.embopress.org/doi/full/10.15252/msb.20188746)
 2. [Experimental design](https://academic.oup.com/bfg/article/17/4/233/4604806)
