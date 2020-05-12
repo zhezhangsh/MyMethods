@@ -5,10 +5,14 @@ All [Affymetrix](http://www.affymetrix.com) probes were re-grouped into unique E
 ```
 # fn.cel: names of all .CEL files with raw data
 
-# install and load the library
+```
+# Install and load the library
 library(devtools);
 install_github("zhezhangsh/rchive");
 library(rchive);
+```
+
+# Download
 
 # Load and process
 raw<-LoadAffyCel(fn.cel); # Load the CEL files into R
