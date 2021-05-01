@@ -23,9 +23,9 @@ By default, the Cell Ranger pipeline is used to
 
 **Seurat** is an R package of scRNA-seq analysis tools. The Cell Ranger outputs, including filtered gene-cell read count matrix and metadata, are loaded into R to create a Seurat object for further data processing and analysis as below.
 
-### A single scRNA-seq library
+### Analysis of each single library
 
-The following steps are applied to each individual library after its Cell Ranger outputs are loaded into R. (Check individual analysis reports to find the values of unspecified parameters).
+The following steps are applied to each scRNA-seq library after its raw data is processed by Cell Ranger as described above. (Check individual analysis reports to find the values of unspecified parameters).
 
   - Filter genes to remove those detected in fewer than ***X*** cells
   - Filter cells to remove those with fewer than ***X*** or more than ***Y*** detected genes
@@ -33,30 +33,41 @@ The following steps are applied to each individual library after its Cell Ranger
   - (Optional) filter cells to remove those with more than ***X***% of total read count contributed by immunoglobin genes
   - Normalize the read count data between cells, using the ***LogNormalize*** method (divided by total count of the cell, multiplied by a constant scaling factor, and then natural-log transformation)
   - Scale the LogNormalized data of each gene across all cells to make its mean equal to 0 and standard deviation equal to 1. 
+  - Select top ***X*** high variable genes to reduce computational burden
   - Run principal components analysis (PCA) on genes to reduce data dimensionality with 50 initial principal components
-  - Run the Jack Straw
+  - Run the Jack Straw procedure to determine the number of dimensions for cell clustering analysis with default p value cutoff equal to 1e-5
+  - Cluster cells using the number of dimensions determined by Jack Straw and the Shared Nearest Neighbor (SNN) algorithm, with default resolution equal to 0.8
+  - Run both t-SNE and UMAP algorithms to project the cell clusters on a 2-dimensional space
+  - Use Wilcoxon Rank Sum test to identify marker genes of each cluster by comparing it to all other cells
 
 ```
 # Code example to analyze a signle scRNA-seq library using Seurat
 cnt <- Read10X('path/sample_id/outs/filtered_feature_bc_matrix');  # read in gene-cell read count matrix
-
-srt <- CreateSeuratObject(cnt, project=nm, min.cells = 3));
-srt[["percent.mt"]] <- PercentageFeatureSet(srt[[i]], pattern = "^mt-");
-srt[[i]][["percent.ig"]] <- PercentageFeatureSet(srt[[i]], pattern = "^Ig");
-srt <- subset(s, subset = nFeature_RNA >= 200 & nFeature_RNA <= 6000 & percent.mt < 5);
+srt <- CreateSeuratObject(cnt, project='myProject', min.cells = 3);
+srt[["percent.mt"]] <- PercentageFeatureSet(srt, pattern = "^mt-");
+srt[["percent.ig"]] <- PercentageFeatureSet(srt, pattern = "^Ig");
+srt <- subset(srt, subset = nFeature_RNA >= 200 & nFeature_RNA <= 6000 & percent.mt < 5);
 srt <- NormalizeData(srt);
-srt <- FindVariableFeatures(srt);
 srt <- ScaleData(srt);
+srt <- FindVariableFeatures(srt);
 srt <- RunPCA(srt);
 srt <- JackStraw(srt);
-srt <- ScoreJackStraw(srt, dims=1:20);
-jck <- s@reductions$pca@jackstraw@overall.p.values;
+srt <- ScoreJackStraw(srt);
+jck <- srt@reductions$pca@jackstraw@overall.p.values;
 jck <- max(jck[jck[, 2]<=10^-5, 1]);
 srt <- FindNeighbors(srt, dims=1:jck);
-srt <- FindClusters(srt, resolution = 0.8);
+srt <- FindClusters(srt);
 srt <- RunTSNE(srt, dims=1:jck);
 srt <- RunUMAP(srt, dims=1:jck);
+
+mrk0 <- FindMarkers(srt ident.1=0); # Compare Cluster 0 cells to all other cells to identify Cluster 0 marker
 ```
+
+## Analysis of multiple libraries
+
+The following steps are applied to a number of scRNA-seq libraries after all libraries are processed by Cell Ranger as described above. (Check individual analysis reports to find the values of unspecified parameters).
+
+  - 
 
 # References
 
