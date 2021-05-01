@@ -71,6 +71,7 @@ Seurat provides 2 options of integrating multiple libraries. Check project-speci
 
 **Standard integration**
 
+This method is preferred when no substantial systematic bias or batch effect exists between libraries.  
 
 
 # References
