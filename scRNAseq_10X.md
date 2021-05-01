@@ -65,9 +65,13 @@ mrk0 <- FindMarkers(srt ident.1=0); # Compare Cluster 0 cells to all other cells
 
 ## Analysis of multiple libraries
 
-The following steps are applied to a number of scRNA-seq libraries after all libraries are processed by Cell Ranger as described above. (Check individual analysis reports to find the values of unspecified parameters).
+The following steps are applied to a number of scRNA-seq libraries after all libraries are processed by Cell Ranger as described above. Check individual analysis reports to find the values of unspecified parameters.
 
-  - 
+Seurat provides 2 options of integrating multiple libraries. Check project-specific reports to find out which one was used.
+
+**Standard integration**
+
+
 
 # References
 
