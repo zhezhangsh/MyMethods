@@ -19,7 +19,7 @@ By default, the Cell Ranger pipeline is used to
   - The read count matrix is filtered to remove barcodes (cells) with low total counts (default=500)
   - The filtered read count matrices of multiple libraries are aggregated to generate a single gene-cell matrix for the whole data set
 
-## 
+## Cell clustering by Seurat
 
 
 # References
