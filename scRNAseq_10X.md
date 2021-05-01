@@ -16,10 +16,22 @@ By default, the Cell Ranger pipeline is used to
   - Demultiplex the raw sequencing data in BCL (base call) file into FASTQ files of individual scRNA-seq libraries
   - Align sequencing reads to reference transcriptome (GRCh38, GRCm38, etc.)
   - Aligned to reads are mapped to genes and split by their barcodes to generate a feature-barcode (gene-cell) read count matrix
-  - The read count matrix is filtered to remove barcodes (cells) with low total counts (default=500)
-  - The filtered read count matrices of multiple libraries are aggregated to generate a single gene-cell matrix for the whole data set
+  - The gene-cell matrix is filtered to remove barcodes (cells) with low total counts (default=500)
+  - The filtered gene-cell matrices of multiple libraries are aggregated to generate a single gene-cell matrix for the whole data set
 
 ## Cell clustering by Seurat
+
+**Seurat** is an R package of scRNA-seq analysis tools. The Cell Ranger outputs, including filtered gene-cell read count matrix and metadata, are loaded into R to create a Seurat object for further data processing and analysis as below.
+
+### A single scRNA-seq library
+
+After the Cell Ranger outputs are loaded:
+
+  - Filter genes to remove those detected in fewer than ***X*** cells (replace ***X*** with value found in specific report; same below)
+  - Filter cells to remove those with fewer than ***X*** or more than ***Y*** detected genes
+  - Filter cells to remove those with more than ***X***% of total read count contributed by mitochondrial genes
+  - 
+
 
 
 # References
