@@ -63,7 +63,7 @@ srt <- RunUMAP(srt, dims=1:jck);
 mrk0 <- FindMarkers(srt ident.1=0); # Compare Cluster 0 cells to all other cells to identify Cluster 0 marker
 ```
 
-## Analysis of multiple libraries
+## Integrative analysis of multiple libraries
 
 The following steps are applied to a number of scRNA-seq libraries after all libraries are processed by Cell Ranger as described above. Check individual analysis reports to find the values of unspecified parameters.
 
@@ -71,7 +71,7 @@ Seurat provides 2 options of integrating multiple libraries. Check project-speci
 
 **Standard integration**
 
-This method is preferred when systematic bias or batch effect between libraries is not substantial.  
+This method is preferred when systematic bias or batch effect between libraries is not substantial. The integration starts with normalizing read count matrixand selecting high variance genes of individual libraries. 
 
 
 # References
