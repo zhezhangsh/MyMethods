@@ -40,35 +40,22 @@ The following steps are applied to each individual library after its Cell Ranger
 # Code example to analyze a signle scRNA-seq library using Seurat
 cnt <- Read10X('path/sample_id/outs/filtered_feature_bc_matrix');  # read in gene-cell read count matrix
 
-srt <- CreateSeuratObject(cnt, project=nm, min.cells = 3, min.features = 200));
-saveRDS(srt, 'seurat.rds'); # 0
-for (i in 1:length(srt)) srt[[i]][["percent.mt"]] <- PercentageFeatureSet(srt[[i]], pattern = "^mt-");
-for (i in 1:length(srt)) srt[[i]][["percent.ig"]] <- PercentageFeatureSet(srt[[i]], pattern = "^Ig");
-srt <- lapply(srt, function(s) subset(s, subset = nFeature_RNA >= 200 & nFeature_RNA <= 6000 & percent.mt < 5 & percent.ig < 15));
-saveRDS(srt, 'seurat_subset.rds'); # 1
-srt <- lapply(srt, NormalizeData);
-saveRDS(srt, 'seurat_normalized.rds'); # 2
-srt <- lapply(srt, FindVariableFeatures);
-saveRDS(srt, 'seurat_highvar.rds'); # 2
-srt <- lapply(srt, ScaleData);
-saveRDS(srt, 'seurat_scaled.rds'); # 4
-srt <- lapply(srt, RunPCA);
-saveRDS(srt, 'seurat_pca.rds'); # 5
-srt <- lapply(srt, JackStraw);
-srt <- lapply(srt, function(s) ScoreJackStraw(s, dims=1:20));
-saveRDS(srt, 'seurat_jackstraw.rds'); # 6
-jck <- lapply(srt, function(s) s@reductions$pca@jackstraw@overall.p.values);
-jck <- sapply(jck, function(j) max(j[j[, 2]<=10^-5, 1]));
-srt <- lapply(1:length(srt), function(i) FindNeighbors(srt[[i]], dims=1:jck[i]));
-srt <- lapply(srt, function(s) FindClusters(s, resolution = 0.8));
-saveRDS(srt, 'seurat_clustered.rds'); # 7
-srt <- lapply(1:length(srt), function(i) RunTSNE(srt[[i]], dims=1:jck[i]));
-saveRDS(srt, 'seurat_tsne.rds'); # 8
-srt <- lapply(1:length(srt), function(i) RunUMAP(srt[[i]], dims=1:jck[i]));
-saveRDS(srt, 'seurat_umap.rds'); # 9
-
-
-
+srt <- CreateSeuratObject(cnt, project=nm, min.cells = 3));
+srt[["percent.mt"]] <- PercentageFeatureSet(srt[[i]], pattern = "^mt-");
+srt[[i]][["percent.ig"]] <- PercentageFeatureSet(srt[[i]], pattern = "^Ig");
+srt <- subset(s, subset = nFeature_RNA >= 200 & nFeature_RNA <= 6000 & percent.mt < 5);
+srt <- NormalizeData(srt);
+srt <- FindVariableFeatures(srt);
+srt <- ScaleData(srt);
+srt <- RunPCA(srt);
+srt <- JackStraw(srt);
+srt <- ScoreJackStraw(srt, dims=1:20);
+jck <- s@reductions$pca@jackstraw@overall.p.values;
+jck <- max(jck[jck[, 2]<=10^-5, 1]);
+srt <- FindNeighbors(srt, dims=1:jck);
+srt <- FindClusters(srt, resolution = 0.8);
+srt <- RunTSNE(srt, dims=1:jck);
+srt <- RunUMAP(srt, dims=1:jck);
 ```
 
 # References
