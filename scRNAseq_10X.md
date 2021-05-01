@@ -41,7 +41,7 @@ The following steps are applied to each scRNA-seq library after its raw data is 
   - Use Wilcoxon Rank Sum test to identify marker genes of each cluster by comparing it to all other cells
 
 ```
-# Code example to analyze a signle scRNA-seq library using Seurat
+# Example code to analyze a signle scRNA-seq library using Seurat
 cnt <- Read10X('path/sample_id/outs/filtered_feature_bc_matrix');  # read in gene-cell read count matrix
 srt <- CreateSeuratObject(cnt, project='myProject', min.cells = 3);
 srt[["percent.mt"]] <- PercentageFeatureSet(srt, pattern = "^mt-");
@@ -67,11 +67,22 @@ mrk0 <- FindMarkers(srt ident.1=0); # Compare Cluster 0 cells to all other cells
 
 The following steps are applied to a number of scRNA-seq libraries after all libraries are processed by Cell Ranger as described above. Check individual analysis reports to find the values of unspecified parameters.
 
-Seurat provides 2 options of integrating multiple libraries. Check project-specific reports to find out which one was used.
+Seurat provides 2 options of integrating multiple libraries. Check project-specific analysis to find out which one was used.
 
 **Standard integration**
 
-This method is preferred when systematic bias or batch effect between libraries is not substantial. The integration starts with normalizing read count matrixand selecting high variance genes of individual libraries. 
+This method is preferred when systematic bias or batch effect between libraries is not substantial. Normalization of read count matrix and selection of high variance genes are applied to individual libraries before the integration. The integration first identifies pairs of cells in different libraries as anchors, which are in the same biological state and could be found in all libraries. The anchors are then utilized as reference to transform the data of all libraries so they can be analyzed together.
+
+```
+# Example code to integrate a list of Seurat object (scRNA-seq libraries) by standard procedure
+srt <- lapply(srt, NormalizeData); # Normalize a list of Seurat objects
+srt <- lapply(srt, FindVariableFeatures);
+srt <- FindIntegrationAnchors(object.list = srt);
+srt <- IntegrateData(anchorset = srt);
+srt <- ScaleData(srt);
+```
+
+**SCTransform**
 
 
 # References
