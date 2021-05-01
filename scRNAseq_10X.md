@@ -25,14 +25,51 @@ By default, the Cell Ranger pipeline is used to
 
 ### A single scRNA-seq library
 
-After the Cell Ranger outputs are loaded:
+The following steps are applied to each individual library after its Cell Ranger outputs are loaded into R. (Check individual analysis reports to find the values of unspecified parameters).
 
-  - Filter genes to remove those detected in fewer than ***X*** cells (replace ***X*** with value found in specific report; same below)
+  - Filter genes to remove those detected in fewer than ***X*** cells
   - Filter cells to remove those with fewer than ***X*** or more than ***Y*** detected genes
   - Filter cells to remove those with more than ***X***% of total read count contributed by mitochondrial genes
-  - 
+  - (Optional) filter cells to remove those with more than ***X***% of total read count contributed by immunoglobin genes
+  - Normalize the read count data between cells, using the ***LogNormalize*** method (divided by total count of the cell, multiplied by a constant scaling factor, and then natural-log transformation)
+  - Scale the LogNormalized data of each gene across all cells to make its mean equal to 0 and standard deviation equal to 1. 
+  - Run principal components analysis (PCA) on genes to reduce data dimensionality with 50 initial principal components
+  - Run the Jack Straw
+
+```
+# Code example to analyze a signle scRNA-seq library using Seurat
+cnt <- Read10X('path/sample_id/outs/filtered_feature_bc_matrix');  # read in gene-cell read count matrix
+
+srt <- CreateSeuratObject(cnt, project=nm, min.cells = 3, min.features = 200));
+saveRDS(srt, 'seurat.rds'); # 0
+for (i in 1:length(srt)) srt[[i]][["percent.mt"]] <- PercentageFeatureSet(srt[[i]], pattern = "^mt-");
+for (i in 1:length(srt)) srt[[i]][["percent.ig"]] <- PercentageFeatureSet(srt[[i]], pattern = "^Ig");
+srt <- lapply(srt, function(s) subset(s, subset = nFeature_RNA >= 200 & nFeature_RNA <= 6000 & percent.mt < 5 & percent.ig < 15));
+saveRDS(srt, 'seurat_subset.rds'); # 1
+srt <- lapply(srt, NormalizeData);
+saveRDS(srt, 'seurat_normalized.rds'); # 2
+srt <- lapply(srt, FindVariableFeatures);
+saveRDS(srt, 'seurat_highvar.rds'); # 2
+srt <- lapply(srt, ScaleData);
+saveRDS(srt, 'seurat_scaled.rds'); # 4
+srt <- lapply(srt, RunPCA);
+saveRDS(srt, 'seurat_pca.rds'); # 5
+srt <- lapply(srt, JackStraw);
+srt <- lapply(srt, function(s) ScoreJackStraw(s, dims=1:20));
+saveRDS(srt, 'seurat_jackstraw.rds'); # 6
+jck <- lapply(srt, function(s) s@reductions$pca@jackstraw@overall.p.values);
+jck <- sapply(jck, function(j) max(j[j[, 2]<=10^-5, 1]));
+srt <- lapply(1:length(srt), function(i) FindNeighbors(srt[[i]], dims=1:jck[i]));
+srt <- lapply(srt, function(s) FindClusters(s, resolution = 0.8));
+saveRDS(srt, 'seurat_clustered.rds'); # 7
+srt <- lapply(1:length(srt), function(i) RunTSNE(srt[[i]], dims=1:jck[i]));
+saveRDS(srt, 'seurat_tsne.rds'); # 8
+srt <- lapply(1:length(srt), function(i) RunUMAP(srt[[i]], dims=1:jck[i]));
+saveRDS(srt, 'seurat_umap.rds'); # 9
 
 
+
+```
 
 # References
 
