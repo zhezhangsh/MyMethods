@@ -105,9 +105,32 @@ Besides the p values calculated by different tests to indicate statistical signi
   - Fold change of gene expression between 2 groups of cells, usually calculated as the log2-ratio of group means of normalized data
   - False discovery rate (FDR) of differential expression, calculated as the adjusted p value using the Benjamini-Hochberg method
 
+All tests of differential expression are carried out using custom R code.
+
 ### Wilcox Rank Sum Test
 
-RST is the default method used by Seurat to test differential expression between 2 cell groups, such as one treatment vs. the other treatment and one cell cluster vs. all other clusters. 
+Wilcox RST is the default method used by Seurat to test differential expression between 2 cell groups, such as one treatment vs. the other treatment and one cell cluster vs. all other clusters. As a non-parametric method, it has no requirement on data distribution. Wilcox RST is a 2-group comparison method, so it ignores the within-group variance between replicates of the same treatment groups, or multiple cell clusters combined into the same group. On the other hand, Wilcox could become over-sensitive when the number of cells per group is large and the biological variance between sample is absent in the data set (i.e. no replicates). 
+
+### DESeq2 test
+
+DESeq2 is a popular method to test differential expression in RNA-seq data. It is also a two-group comparison test, but allows more complicated statistical models to include extra covariates. DESeq2 has its own normalization method, and uses the original read count matrix as its input. Before running DESeq2, read counts of cells in the same library are pooled together. Because there is only one measurement per gene per library, the statistical power of the test depends on the number of libraries, or replicates per group. Therefore, DESeq2 is a relatively conservative option, but it takes the biological variance between samples into account.
+
+### Multi-way and nested ANOVA
+
+The ANOVA model includes cell clusters and treatment groups, and the replicates nested within the treatment groups. Normalized data of individual cells is used to calculate within-group variance. This method could be more sensitive than other tests, and takes biological variance between replicates into account at the same time. It also requires the normal, or nearly normal, distribution of the normalized data of most genes. 
+
+## Gene set analysis
+
+Differentially expressed genes (DEGs) or marker genes are tested against predefined gene sets, such as Gene Ontology terms and KEGG pathways. Two methods of gene set analysis are commonly used. Check project-specific analysis reports to find the details.
+
+### Gene set over-representation test
+
+This method uses Fisher's exact or hypergenometric test to identify gene sets within which the DEGs or markers are over-represented.
+
+
+### Gene set enrichment analysis
+
+This method quantifies the differential expression of all genes by test statistics, such as log-transformed p value or log2-ratio. All genes are ranked accordingly, and the skewness of gene sets within the rankings is tested via the [GSEA](https://www.gsea-msigdb.org/gsea/index.jsp) algorithm. 
 
 # References
 
