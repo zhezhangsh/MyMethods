@@ -84,6 +84,30 @@ srt <- ScaleData(srt);
 
 **SCTransform**
 
+SCTransform is recommended to data sets with batch effects that cannot be properly removed by standard integration. It uses its own normalization method by fitting data with negative binomial regression and calculating the residual values as normalized data. The normalizaiton also includes a variance stabilization subroutine that reduces the variance of low expression genes. The normalized data of individual libraries was then integrated through anchor cells as described above.
+
+```
+# Example code to integrate a list of Seurat object (scRNA-seq libraries) by SCTransform
+srt <- lapply(srt, SCTransform); # Normalize a list of Seurat objects
+ftr <- SelectIntegrationFeatures(object.list = srt);
+srt <- PrepSCTIntegration(object.list = srt, anchor.features = ftr);
+srt <- FindIntegrationAnchors(object.list = srt, normalization.method = "SCT", anchor.features = ftr);
+srt <- IntegrateData(anchorset = srt, normalization.method = "SCT");
+```
+
+## Differential gene expression
+
+Several statistical methods are available to test gene differential expression between 2 or more groups of cells belong to different cell clusters or treatment groups. Check project-specific analysis report to find out which one was used.
+
+Besides the p values calculated by different tests to indicate statistical significance of differential expression, other commonly used statistics are:
+ 
+  - The fraction of cells within which the gene is detected (read count greater than 0) in both groups and their difference
+  - Fold change of gene expression between 2 groups of cells, usually calculated as the log2-ratio of group means of normalized data
+  - False discovery rate (FDR) of differential expression, calculated as the adjusted p value using the Benjamini-Hochberg method
+
+### Wilcox Rank Sum Test
+
+RST is the default method used by Seurat to test differential expression between 2 cell groups, such as one treatment vs. the other treatment and one cell cluster vs. all other clusters. 
 
 # References
 
